@@ -4,7 +4,7 @@ def file_existe(path: str) :
     comando = "cat {} > /dev/null".format(path)
     return os.system(comando)
 
-def facila_prenchido() :
+def facila_prenchido() -> bool:
     facila = open(os.path.expanduser("~/.facila.txt"), "r")
     linhas = facila.readlines()
     return len(linhas) == 3
@@ -151,10 +151,16 @@ def get_terminal() -> str :
     return f.readline().split("/")[-1][0:-1]
     
 def instala_facila() -> bool :
+    print(" Instalando facila.py em /bin")
     terminal = get_terminal()
     if terminal == "zsh" :
-        file = open(os.path.expanduser("~/.zshrc"), "w")
-        file.write("teste")
+        if file_existe("~/../../bin/facila.py") == 0 :
+            print(" ")
+            print(" facila.py já instalado em /bin")
+            print(" ")
+        else :
+            os.system("sudo cp ./facila.py ~/../../bin")
+        os.system('echo "alias facila=\'python3  ~/../../bin/facila.py\'" >> ~/.zshrc')
 
 def main() :
     os.system("clear")

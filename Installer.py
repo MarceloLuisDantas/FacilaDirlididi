@@ -7,6 +7,7 @@ def file_existe(path: str) :
 def facila_prenchido() -> bool:
     facila = open(os.path.expanduser("~/.facila.txt"), "r")
     linhas = facila.readlines()
+    facila.close()
     return len(linhas) == 3
 
 def get_token() -> str :
@@ -67,6 +68,7 @@ def preenche_facila() -> bool :
         print(f"Nome: {facila[1]}")
         print(f"Matricula: {facila[2]}")
         escolha = get_escolha("    Os valores estão corretos? [s/n]: ")
+        facila.close()
         if escolha :
             return True
         else :
@@ -148,7 +150,9 @@ def get_terminal() -> str :
     os.system("touch suporte.txt")
     os.system("echo $SHELL > suporte.txt")
     f = open("./suporte.txt")
-    return f.readline().split("/")[-1][0:-1]
+    shell = f.readline().split("/")[-1][0:-1]
+    f.close()
+    return shell
     
 def instala_facila() -> bool :
     print(" Instalando facila.py em /bin")
@@ -158,9 +162,12 @@ def instala_facila() -> bool :
             print(" ")
             print(" facila.py já instalado em /bin")
             print(" ")
+            return True
         else :
             os.system("sudo cp ./facila.py ~/../../bin")
-        os.system('echo "alias facila=\'python3  ~/../../bin/facila.py\'" >> ~/.zshrc')
+            os.system('echo "alias facila=\'python3  ~/../../bin/facila.py\'" >> ~/.zshrc')
+            return True
+    return False
 
 def main() :
     os.system("clear")
@@ -170,6 +177,13 @@ def main() :
         if create_facil_file() :
             print(" Arquivo de .facila configurado com sucesso")
             print(" ")
-            instala_facila()
-
+            if instala_facila() :
+                print(" Facila instalado com sucesso ")
+                print(" Digite 'facila help' para mais informações")
+            else :
+                print(" Erro ao instalar facila em /bin")
+        else :
+            print(" Erro ao verificar .facila.txt")
+    else :
+        print(" Erro a overifica Dirlididi.py")
 main()

@@ -63,12 +63,11 @@ def preenche_facila() -> bool :
     sv_nome = os.system(f"echo {nome} >> ~/.facila.txt")
     sv_matricula = os.system(f"echo {matricula} >> ~/.facila.txt")
     if [sv_token, sv_nome, sv_matricula] == [0, 0, 0] :
-        facila = open(os.path.expanduser("~/.facila.txt"), "r")
+        facila = open(os.path.expanduser("~/.facila.txt"), "r").readlines()
         print(f"Token: {facila[0]}")
         print(f"Nome: {facila[1]}")
         print(f"Matricula: {facila[2]}")
         escolha = get_escolha("    Os valores estão corretos? [s/n]: ")
-        facila.close()
         if escolha :
             return True
         else :
@@ -167,6 +166,8 @@ def instala_facila() -> bool :
             os.system("sudo cp ./facila.py ~/../../bin")
             os.system('echo "alias facila=\'python3  ~/../../bin/facila.py\'" >> ~/.zshrc')
             return True
+    elif terminal == "bash" :
+        print("bash")
     return False
 
 def main() :

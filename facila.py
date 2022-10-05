@@ -33,26 +33,47 @@ def le_info_projeto() -> List :
 
 def main() :
     modo = argv[1]
-    if modo == "new" :
-        if len(argv) != 4 :
+    if modo == "help" :
+        print(" Facila | Facilitador de uso do Dirlididi")
+        print(" Uso ")
+        print('   | facila new [token da questão] "[nome da questão]"  ')
+        print("   |--- Ira criar o arquivo com o nome da questão em CamelCase")
+        print("   | ")
+        print("   | facila new [token da questão] ")
+        print("   |--- Ira criar o arquivo como Programa.java ")
+        print("   | ")
+        print("   | facila submit ")
+        print("   |--- Ira submeter a questão local ")
+        print("   | ")
+        print("   | facila config-file ")
+        print("   |--- Ira inciar o processo para reconfigurar o arquivo .facila ")
+        
+    elif modo == "new" :
+        if len(argv) not in [3, 4] :
             print("Quantidade de parametros erradas")
             print("facila new [token da questão] [nome da questão]")
+            print("facila new [token da questão]")
         else :
             token = argv[2].split(" ")
             if len(token) != 1 :
                 print(f"'{argv[2]}' não é um token valido")
             else :
                 print("")
-                nome_formatado = formata_nome(argv[3])
-                system(f"mkdir ./{nome_formatado}")
+                if len(argv) == 4 :
+                    nome_formatado = formata_nome(argv[3])
+                    nome_formatado_pasta = nome_formatado
+                else :
+                    nome_formatado = "Programa"
+                    nome_formatado_pasta = argv[2]
 
-                system(f"touch ./{nome_formatado}/.info.txt")
-                info = open(f"./{nome_formatado}/.info.txt", "w")
+                system(f"mkdir ./{nome_formatado_pasta}")
+                system(f"touch ./{nome_formatado_pasta}/.info.txt")
+                info = open(f"./{nome_formatado_pasta}/.info.txt", "w")
                 info.write(argv[2] + "\n")
                 info.write(nome_formatado)
                 info.close()
 
-                system(f"touch ./{nome_formatado}/{nome_formatado}.java")
+                system(f"touch ./{nome_formatado_pasta}/{nome_formatado}.java")
                 _, nome, matricula = le_facila_file()
                 template = f"""/**
 * Laboratório de Programação 2 - Lab X
@@ -65,8 +86,8 @@ public class {nome_formatado} {{
         System.out.println(\"Hello World!!\");
     }}
 }}
-                """
-                java = open(f"./{nome_formatado}/{nome_formatado}.java", "w")
+"""
+                java = open(f"./{nome_formatado_pasta}/{nome_formatado}.java", "w")
                 java.write(template)
                 java.close()
     elif modo == "submit" :

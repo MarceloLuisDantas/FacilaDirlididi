@@ -23,7 +23,6 @@ def get_escolha(label: str) -> bool :
         else :
             print(f"    '{escolha}' não é uma opção valida")
 
-
 def get_info(label: str) -> str :
     while True :
         info = input(f"    {label}")
@@ -189,4 +188,5 @@ def main() :
             msg_erro("Erro ao verificar .facila.txt")
     else :
         msg_erro("Erro a overifica Dirlididi.py")
+
 main()

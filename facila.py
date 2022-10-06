@@ -172,7 +172,7 @@ def submit() :
         token, nome = le_info_projeto()
         if token != "" :
             token_acesso, _, _ = le_facila_file()
-            print("Submetendo projeto")
+            print(f"Submetendo projeto: {token} - {nome}.java")
             system(f"python3 ~/../../bin/dirlididi.py submit {token} {token_acesso} {nome}.java")
     except :
         print("Arquivo .info não encontrado")
@@ -182,9 +182,7 @@ def config() :
         create_facil_file()
     preenche_facila()
 
-def main() :
-    print(" ")
-    
+def main() : 
     modo = argv[1]
     if modo == "help" :
         help()        
@@ -212,3 +210,4 @@ def main() :
             print("Uso - facila config ")
 
 main()
+print(" ")

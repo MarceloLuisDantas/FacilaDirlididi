@@ -78,7 +78,6 @@ def preenche_facila() -> bool :
         return False
 
 def create_facil_file() -> bool :
-    print(" ")
     print(" ----- Configurando arquivo .facila ----- ")
     print(" ----- Neste arquivo sera guardado o seu token de acesso ao Dirlididi")
     print("       e o seu nome e matricula para criação dos cabeçalhos")
@@ -160,7 +159,6 @@ def instala_facila() -> bool :
         return True
     elif terminal == "bash" :
         os.system('echo "alias facila=\'python3  ~/../../bin/facila.py\'" >> ~/.bashrc')
-        print("Deu certo")
         return True
 
     else :
@@ -176,6 +174,7 @@ def main() :
     os.system("clear")
     if check_dirlididi() :
         print(" Dirlididi configurado com sucesso")
+        print(" ")
         if create_facil_file() :
             print(" .facila configurado com sucesso")
             print(" ")
@@ -183,10 +182,11 @@ def main() :
                 print(" Facila instalado com sucesso ")
                 print(" ")
                 print(" Digite 'facila help' para mais informações")
+                print(" ")
             else :
-                print(" Erro ao instalar facila em /bin")
+                msg_erro("Erro ao instalar facila em /bin")
         else :
-            print(" Erro ao verificar .facila.txt")
+            msg_erro("Erro ao verificar .facila.txt")
     else :
-        print(" Erro a overifica Dirlididi.py")
+        msg_erro("Erro a overifica Dirlididi.py")
 main()

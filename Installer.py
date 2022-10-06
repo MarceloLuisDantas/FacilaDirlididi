@@ -147,27 +147,29 @@ def instala_facila() -> bool :
     print(" Instalando facila.py em /bin")
     print(" ")
     terminal = get_terminal()
-    if terminal == "zsh" :
-        if file_existe("~/../../bin/facila.py") :
-            print(" facila.py já instalado em /bin")
-            return True
-        else :
-            os.system("sudo cp ./facila.py ~/../../bin")
-            os.system('echo "alias facila=\'python3  ~/../../bin/facila.py\'" >> ~/.zshrc')
-            return True
+
+    if file_existe("~/../../bin/facila.py") :
+        print(" facila.py já instalado em /bin")
     else :
-        print("TERMINAL É ESTE - ", terminal)
-        print("TERMINAL É ESTE - ", terminal)
-        print("TERMINAL É ESTE - ", terminal)
-        print("TERMINAL É ESTE - ", terminal)
-        print("TERMINAL É ESTE - ", terminal)
-        print("TERMINAL É ESTE - ", terminal)
-        print("TERMINAL É ESTE - ", terminal)
-        print("TERMINAL É ESTE - ", terminal)
-        print("TERMINAL É ESTE - ", terminal)
-        print("TERMINAL É ESTE - ", terminal)
-        print("TERMINAL É ESTE - ", terminal)
-        print("TERMINAL É ESTE - ", terminal)
+        if os.system("sudo cp ./facila.py ~/../../bin") != 0 :
+            msg_erro("Instalando facila.py em /bin")
+            return False
+
+    if terminal == "zsh" :
+        os.system('echo "alias facila=\'python3  ~/../../bin/facila.py\'" >> ~/.zshrc')
+        return True
+    elif terminal == "bash" :
+        os.system('echo "alias facila=\'python3  ~/../../bin/facila.py\'" >> ~/.bashrc')
+        print("Deu certo")
+        return True
+
+    else :
+        print(" ")
+        print(f" O seu terminal é - {terminal}")
+        print(" O qual esta fora do escopo de compatibilidade")
+        print(" Favor, notifique ao dono do repositorio sobre")
+        print(" ")
+
     return False
 
 def main() :

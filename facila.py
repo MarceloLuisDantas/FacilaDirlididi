@@ -59,8 +59,8 @@ def msg_erro(etapa: str) :
     print(f"     - {etapa} ")
     print(" Favor reportar ao dono do repositorio")
 
-def salva_info(info: str, path: str, erro: str) -> bool :
-    result = system(f"echo {info} >> {path}") 
+def salva_info(label: str, erro: str) -> bool :
+    result = system(label) 
     if result != 0 :
         msg_erro(erro)
         return False
@@ -84,14 +84,14 @@ def preenche_facila() -> bool :
     matricula = get_info("Qual matricula colocar nos cabeçalhos: ")
 
     print(" ")
-    print(" -- Executando | echo {seu token}     >> ~/.facila.txt ")
+    print(" -- Executando | echo {seu token}     > ~/.facila.txt ")
     print(" -- Executando | echo {seu nome}      >> ~/.facila.txt ")
     print(" -- Executando | echo {sua matricula} >> ~/.facila.txt ")
     print(" ")
     
-    sv_token     = salva_info(token,     "~/.facila.txt", "Salvar Token")    
-    sv_nome      = salva_info(nome,      "~/.facila.txt", "Salvar Nome")    
-    sv_matricula = salva_info(matricula, "~/.facila.txt", "Salvar Matricula")
+    sv_token     = salva_info(f"echo {token} > ~/.facila.txt",      "Salvar Token")    
+    sv_nome      = salva_info(f"echo {nome} >> ~/.facila.txt",      "Salvar Nome")    
+    sv_matricula = salva_info(f"echo {matricula} >> ~/.facila.txt", "Salvar Matricula")
 
     if sv_token and sv_nome and sv_matricula :
         facila = open(path.expanduser("~/.facila.txt"), "r").readlines()
@@ -127,9 +127,6 @@ def help() :
     print("   | ")
     print("   | facila config ")
     print("   |--- Ira inciar o processo para reconfigurar o arquivo .facila ")
-    print("   | ")
-    print("   | facila update ")
-    print("   |--- Ira verificar se á uma nova versão do Dirlididi é do Facila ")
 
 def new() :
     print(" Criando novo projeto Dirlididi")
@@ -213,4 +210,5 @@ def main() :
         else :
             print("Quantidade de parametros erradas")
             print("Uso - facila config ")
+
 main()

@@ -155,6 +155,19 @@ def instala_facila() -> bool :
             os.system("sudo cp ./facila.py ~/../../bin")
             os.system('echo "alias facila=\'python3  ~/../../bin/facila.py\'" >> ~/.zshrc')
             return True
+    else :
+        print("TERMINAL É ESTE - ", terminal)
+        print("TERMINAL É ESTE - ", terminal)
+        print("TERMINAL É ESTE - ", terminal)
+        print("TERMINAL É ESTE - ", terminal)
+        print("TERMINAL É ESTE - ", terminal)
+        print("TERMINAL É ESTE - ", terminal)
+        print("TERMINAL É ESTE - ", terminal)
+        print("TERMINAL É ESTE - ", terminal)
+        print("TERMINAL É ESTE - ", terminal)
+        print("TERMINAL É ESTE - ", terminal)
+        print("TERMINAL É ESTE - ", terminal)
+        print("TERMINAL É ESTE - ", terminal)
     return False
 
 def main() :

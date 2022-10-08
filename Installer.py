@@ -34,13 +34,12 @@ def msg_erro(etapa: str) :
     print(" Algo deu errado durante o processo - ")
     print(f"     - {etapa} ")
     print(" Favor reportar ao dono do repositorio")
-    os.close()
+    exit()
 
 def salva_info(info: str, path: str, erro: str) -> bool :
     result = os.system(f"echo {info} >> {path}") 
     if result != 0 :
         msg_erro(erro)
-        return False
     return True
 
 def preenche_facila() -> bool :
@@ -71,12 +70,10 @@ def preenche_facila() -> bool :
 
         if not escolha :
             msg_erro("Salvar Informaçaões em ~/.facila 2")
-            return False
         return True
 
     else :
         msg_erro("Salvar Informações em ~/.facila 1")
-        return False
 
 def create_facila_file() -> bool :
     print(" ----- Configurando arquivo .facila ----- ")
@@ -107,13 +104,12 @@ def create_facila_file() -> bool :
             return True
         else :
             msg_erro("Criar arquivo de .facila")
-            return False
                     
 def check_dirlididi() -> bool :
     print(" ")
     print(" ----- Configurando dirlididi.py na pasta ~/Facila -----")
     print(" ")
-    if file_existe("~/Facila") :
+    if file_existe("~/Facila/dirlididi.py") :
         print(" -- Dirlididi.py já instalado e na pasta ~/Facila")
         print(" ")
         return True
@@ -156,7 +152,6 @@ def instala_facila() -> bool :
 
     if os.system("cp ./facila.py ~/Facila") != 0 :
         msg_erro("Instalando facila.py em ~/Facila")
-        return False
 
     if file_existe("~/Facila/templates.py") :
         print(" templates.py já instalado em ~/Facila")
@@ -166,7 +161,6 @@ def instala_facila() -> bool :
 
     if os.system("cp ./templates.py ~/Facila") != 0 :
         msg_erro("Instalando templates.py em ~/Facila")
-        return False
 
     if terminal == "zsh" :
         os.system('echo "alias facila=\'python3 ~/Facila/facila.py\'" >> ~/.zshrc')

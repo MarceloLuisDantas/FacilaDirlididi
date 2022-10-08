@@ -59,6 +59,7 @@ def msg_erro(etapa: str) :
     print(" Algo deu errado durante o processo - ")
     print(f"     - {etapa} ")
     print(" Favor reportar ao dono do repositorio")
+    exit()
 
 def salva_info(label: str, erro: str) -> bool :
     result = system(label) 
@@ -107,12 +108,23 @@ def preenche_facila() -> bool :
 
         if not escolha :
             msg_erro("Salvar Informaçaões em ~/Facila/facila.txt 2")
-            return False
         return True
 
     else :
         msg_erro("Salvar Informações em ~/Facila/facila.txt 1")
-        return False
+
+def get_extensao(lang: str) -> str :
+    linguagens = {
+        "java" : "java",
+        "python" : "py",
+        "haskell" : "hs",
+        "prolog" : "pl",
+        "c++" : "cpp",
+        "c" : "c"
+    }
+    if lang in linguagens.keys() :
+        return linguagens[lang]
+    return "error"
 
 def help() :
     print(" Facila | Facilitador de uso do Dirlididi")
@@ -128,19 +140,9 @@ def help() :
     print("   | ")
     print("   | facila config ")
     print("   |--- Ira inciar o processo para reconfigurar o arquivo .facila ")
-
-def get_extensao(lang: str) -> str :
-    linguagens = {
-        "java" : "java",
-        "python" : "py",
-        "haskell" : "hs",
-        "prolog" : "pl",
-        "c++" : "cpp",
-        "c" : "c"
-    }
-    if lang in linguagens.keys() :
-        return linguagens[lang]
-    return "error"
+    print("   | ")
+    print("   | facila run ")
+    print("   |--- Ira executar o programa ")
 
 def new() :
     print(" Criando novo projeto Dirlididi")
@@ -149,11 +151,12 @@ def new() :
         print(f"'{argv[2]}' não é um token valido")
     else :
         extensao = "java"
+        linguagem = "java"
         if len(argv) == 5 :
-            extensao = get_extensao(argv[4])
+            linguagem = argv[4]
+            extensao = get_extensao(linguagem)
             if extensao == "error" :
-                msg_erro(f"Linguagem {argv[4]} não conhecida")
-                quit()
+                msg_erro(f"Linguagem {linguagem} não conhecida")
             else :
                 nome_formatado = formata_nome(argv[3])
                 nome_formatado_pasta = nome_formatado
@@ -168,12 +171,13 @@ def new() :
             system(f"touch ./{nome_formatado_pasta}/.info.txt")
             info = open(f"./{nome_formatado_pasta}/.info.txt", "w")
             info.write(argv[2] + "\n")
-            info.write(f"{nome_formatado}.{extensao}")
+            info.write(nome_formatado + "\n")
+            info.write(extensao + "\n")
             info.close()
 
             system(f"touch ./{nome_formatado_pasta}/{nome_formatado}.{extensao}")
             _, nome, matricula = le_facila_file()
-            template = get_template(argv[4], nome, matricula, nome_formatado)
+            template = get_template(linguagem, nome, matricula, nome_formatado)
             file = open(f"./{nome_formatado_pasta}/{nome_formatado}.{extensao}", "w")
             file.write(template)
             file.close()            
@@ -192,6 +196,49 @@ def config() :
     if not file_existe("~/Facila/facila.txt") :
         create_facil_file()
     preenche_facila()
+
+def run() :
+    if file_existe("./.info.txt") :
+        info = open("./.info.txt").readlines()
+        arquivo = info[1].strip()
+        extensao = info[2].strip()
+        nome_completo = f"{arquivo}.{extensao}"
+
+        if extensao == "java" :
+            print(f"Compilando: {nome_completo}")
+            system(f"javac {nome_completo}")
+            print(f"Rodando: {nome_completo}")
+            system(f"java {nome_completo}")
+        
+        elif extensao == "py" :
+            print(f"Rodando: {nome_completo}")
+            system(f"python3 {nome_completo}")
+        
+        elif extensao == "c" :
+            print(f"Compilando: {nome_completo}")
+            system(f"gcc {nome_completo} -o {arquivo}")
+            print(f"Rodando: {nome_completo}")
+            system(f"./{arquivo}")
+       
+        elif extensao == "cpp" :
+            print(f"Compilando: {nome_completo}")
+            system(f"g++ {nome_completo} -o {arquivo}")
+            print(f"Rodando: {nome_completo}")
+            system(f"./{arquivo}")
+        
+        elif extensao == "hs" :
+            print(f"Compilando: {nome_completo}")
+            system(f"ghc {nome_completo}")
+            print(f"Rodando: {nome_completo}")
+            system(f"./{arquivo}")
+        
+        elif extensao == "pl" :
+            print("ainda não implementado")
+        
+        else :
+            print("linguagem não catalogada")
+    else :
+        msg_erro("Arquivo .info.txt não encontrando")
 
 def main() : 
     modo = argv[1]
@@ -220,5 +267,12 @@ def main() :
         else :
             print(" Quantidade de parametros erradas")
             print("  Uso - facila config ")
+
+    elif modo == "run" :
+        if len(argv) == 2 :
+            run()
+        else :
+            print(" Quantidade de parametros erradas")
+            print("  Uso - facila run ")
 
 main()

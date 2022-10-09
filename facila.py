@@ -21,7 +21,7 @@ def formata_nome(nome: str) -> str :
         nomes_capitalize = list(map(lambda x : x.capitalize(), nomes))
         return "".join(nomes_capitalize)
     except :
-        print(" Nomes podem ter apenas letras e números")
+        print(" Nomes podem ter apenas letras não acentuadas e números")
         exit()
 
 def le_facila_file() -> List :

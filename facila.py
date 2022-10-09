@@ -3,6 +3,7 @@ from os import system, path
 from hashlib import md5
 from typing import List
 from sys import argv
+from re import match
 
 def file_existe(p: str) -> bool :
     try:
@@ -12,9 +13,16 @@ def file_existe(p: str) -> bool :
         return False
 
 def formata_nome(nome: str) -> str :
-    nomes = nome.split(" ")
-    nomes_capitalize = list(map(lambda x : x.capitalize(), nomes))
-    return "".join(nomes_capitalize)
+    filtro = "^[A-Za-z0-9 ]*[A-Za-z0-9 ][A-Za-z0-9 ]*$"
+    correto = match(filtro, nome)
+    try :
+        _ = correto.group(0)
+        nomes = nome.split(" ")
+        nomes_capitalize = list(map(lambda x : x.capitalize(), nomes))
+        return "".join(nomes_capitalize)
+    except :
+        print(" Nomes podem ter apenas letras e números")
+        exit()
 
 def le_facila_file() -> List :
     try :

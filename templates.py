@@ -31,7 +31,7 @@ def __template_c(nome, matricula) -> str :
 
 #include <stdio.h>
 
-int main() {{
+int main( int argc, char *argv[ ] ) {{
     printf("Hello World!!");
     return 0;
 }}
@@ -44,7 +44,7 @@ def __template_cpp(nome, matricula) -> str :
 
 #include <iostream>
 
-int main() {{
+int main(int argc, char *argv[]) {{
     std::cout << "Hello World!";
     return 0;
 }}

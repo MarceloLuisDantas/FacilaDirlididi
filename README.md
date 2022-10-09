@@ -47,5 +47,14 @@ Results: .....
 facila config
 ```
 
-Além de criar  atividades e submeter atividades, é possível configurar o arquivo **.facila** a partir do próprio Facila. Sera pedido as suas informações de Token, Nome e Matrícula novamente e as alterações serão salvas. 
+Além de criar atividades e submeter atividades, é possível configurar o arquivo **.facila** a partir do próprio Facila. Sera pedido as suas informações de Token, Nome e Matrícula novamente e as alterações serão salvas. 
 
+### Facila run
+
+```
+facila config
+```
+
+Ao rodar **facila run** o seu programa sera compilado caso for preciso, e ira ser executado em seguida.
+
+PS: Futuramente sara permitido o passar argumentos para o programa a ser rodado

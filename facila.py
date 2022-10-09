@@ -198,6 +198,12 @@ def config() :
     preenche_facila()
 
 def run() :
+    argumentos = []
+    if len(argv) != 2 :
+        for i in argv[2:] :
+            argumentos.append(i)
+    argumentos = " ".join(argumentos)
+
     if file_existe("./.info.txt") :
         info = open("./.info.txt").readlines()
         arquivo = info[1].strip()
@@ -205,32 +211,41 @@ def run() :
         nome_completo = f"{arquivo}.{extensao}"
 
         if extensao == "java" :
-            print(f"Compilando: {nome_completo}")
-            system(f"javac {nome_completo}")
-            print(f"Rodando: {nome_completo}")
-            system(f"java {nome_completo}")
+            print(f"Facila - Compilando: {nome_completo}")
+            if system(f"javac {nome_completo}") == 0 :
+                print(" Facila - OK ")
+                print(f"Facila - Rodando: {nome_completo}")
+                print(" ")
+                system(f"java {nome_completo} {argumentos}")
         
         elif extensao == "py" :
-            print(f"Rodando: {nome_completo}")
-            system(f"python3 {nome_completo}")
+            print(f"Facila - Rodando: {nome_completo}")
+            print(" ")
+            system(f"python3 {nome_completo} {argumentos}")
         
         elif extensao == "c" :
-            print(f"Compilando: {nome_completo}")
-            system(f"gcc {nome_completo} -o {arquivo}")
-            print(f"Rodando: {nome_completo}")
-            system(f"./{arquivo}")
+            print(f"Facila - Compilando: {nome_completo}")
+            if system(f"gcc {nome_completo} -o {arquivo}") == 0 :
+                print("Facila - OK")
+                print(f"Facila - Rodando: {nome_completo}")
+                print(" ")
+                system(f"./{arquivo} {argumentos}")
        
         elif extensao == "cpp" :
-            print(f"Compilando: {nome_completo}")
-            system(f"g++ {nome_completo} -o {arquivo}")
-            print(f"Rodando: {nome_completo}")
-            system(f"./{arquivo}")
+            print(f"Facila - Compilando: {nome_completo}")
+            if system(f"g++ {nome_completo} -o {arquivo}") == 0 :
+                print("Facila - OK")
+                print(f"Facila - Rodando: {nome_completo}")
+                print(" ")
+                system(f"./{arquivo} {argumentos}")
         
         elif extensao == "hs" :
-            print(f"Compilando: {nome_completo}")
-            system(f"ghc {nome_completo}")
-            print(f"Rodando: {nome_completo}")
-            system(f"./{arquivo}")
+            print(f"Facila - Compilando: {nome_completo}")
+            if system(f"ghc {nome_completo}") == 0 :
+                print("Facila - OK")
+                print(f"Facila - Rodando: {nome_completo}")
+                print(" ")
+                system(f"./{arquivo} {argumentos}")
         
         elif extensao == "pl" :
             print("ainda não implementado")
@@ -269,10 +284,6 @@ def main() :
             print("  Uso - facila config ")
 
     elif modo == "run" :
-        if len(argv) == 2 :
-            run()
-        else :
-            print(" Quantidade de parametros erradas")
-            print("  Uso - facila run ")
+        run()    
 
 main()

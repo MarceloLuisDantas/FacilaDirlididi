@@ -5,9 +5,15 @@ def __template_java(nome, matricula, nome_formatado) -> str :
 * @Author {nome} - {matricula}
 */
 
+import java.util.Scanner;
+
 public class {nome_formatado} {{
     public static void main(String[] args) {{
-        System.out.println(\"Hello World!!\");
+    	Scanner sc = new Scanner(System.in);
+    	
+        // codigo
+        
+        sc.close();
     }}
 }}
 """

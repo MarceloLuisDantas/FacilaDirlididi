@@ -1,5 +1,6 @@
 from templates import get_template
 from os import system, path
+from hashlib import md5
 from typing import List
 from sys import argv
 
@@ -55,11 +56,14 @@ def get_info(label: str) -> str :
         if get_escolha(f"    Confirmar: {info}? [s/n]: ") :
             return info
 
-def msg_erro(etapa: str) :
-    print(" Algo deu errado durante o processo - ")
-    print(f"     - {etapa} ")
-    print(" Favor reportar ao dono do repositorio")
-    exit()
+def msg_erro(etapa: str, critico=True, ) :
+    if critico :
+        print(" Algo deu errado durante o processo - ")
+        print(f"     - {etapa} ")
+        print(" Favor reportar ao dono do repositorio")
+        exit()
+    else :
+        print(f" Erro - {etapa}")
 
 def salva_info(label: str, erro: str) -> bool :
     result = system(label) 
@@ -125,6 +129,98 @@ def get_extensao(lang: str) -> str :
     if lang in linguagens.keys() :
         return linguagens[lang]
     return "error"
+
+def get_hash(file: str) -> str :
+    md = md5()
+
+    with open(file, 'rb') as f:
+        while True:
+            data = f.read(65536) # read in 64kb chunks!
+            if not data:
+                break
+            md.update(data)
+
+    return md.hexdigest()
+
+def compara_hash(file: str) -> str :
+    hash_novo = get_hash(file)
+    info = open("./.info.txt", "r").readlines()
+    if len(info) == 3 :
+        return "diferente"
+    elif len(info) == 4 :
+        hash_antigo = info[3]
+        if hash_novo == hash_antigo :
+            return "igual"
+        return "diferente"
+
+def atualiza_hash(file: str) :
+    linhas = open("./.info.txt", "r").readlines()
+    if len(linhas) == 4 :
+        linhas[3] = get_hash(file)
+    else :
+        linhas.append(get_hash(file))
+
+    info = open("./.info.txt", "w") 
+    info.seek(0)
+    info.writelines(linhas)
+    info.close()
+
+def compila_executa(lang: str, file: str, nome: str, args: List) :
+    if lang == "py" :
+        print(f"Facila - Rodando: {file}")
+        print(" ")
+        system(f"python3 {file} {args}")
+    else :
+        print(f"Facila - Compilando: {file}")
+
+        if lang == "java" :
+            if system(f"javac {file}") == 0 :
+                print("Facila - OK ")
+                print(f"Facila - Rodando: {file}")
+                print(" ")
+                system(f"java {file} {args}")
+
+        elif lang == "c" :
+            if system(f"gcc {file} -o {nome}") == 0 :
+                print("Facila - OK")
+
+        elif lang == "cpp" :
+            if system(f"g++ {file} -o {nome}") == 0 :
+                print("Facila - OK")
+
+        elif lang == "hs" :
+            if system(f"ghc {file} -o {nome}") == 0 :
+                print("Facila - OK")
+        else :
+            print("linguagem não catalogada")
+
+        if lang in ["c", "cpp", "hs"] :
+            print(f"Facila - Rodando: {file}")
+            print(" ")
+            system(f"./{nome} {args}")
+
+        elif lang == "pl" :
+            print("ainda não implementado")
+
+
+def executa(lang: str, file: str, args: List) :
+    print(f"Facila - Rodando: {file}")
+    print(" ")
+
+    if lang == "java" :
+        system(f"java {file} {args}")
+    
+    elif lang == "py" :
+        system(f"python3 {file} {args}")
+    
+    elif lang in ["c", "cpp", "hs"] :
+        system(f"./{file} {args}")
+
+    elif lang == "pl" :
+        print("ainda não implementado")
+        
+    else :
+        print("linguagem não catalogada")
 
 def help() :
     print(" Facila | Facilitador de uso do Dirlididi")
@@ -196,7 +292,7 @@ def config() :
     if not file_existe("~/Facila/facila.txt") :
         create_facil_file()
     preenche_facila()
-
+    
 def run() :
     argumentos = []
     if len(argv) != 2 :
@@ -205,55 +301,21 @@ def run() :
     argumentos = " ".join(argumentos)
 
     if file_existe("./.info.txt") :
-        info = open("./.info.txt").readlines()
-        arquivo = info[1].strip()
-        extensao = info[2].strip()
-        nome_completo = f"{arquivo}.{extensao}"
-
-        if extensao == "java" :
-            print(f"Facila - Compilando: {nome_completo}")
-            if system(f"javac {nome_completo}") == 0 :
-                print(" Facila - OK ")
-                print(f"Facila - Rodando: {nome_completo}")
-                print(" ")
-                system(f"java {nome_completo} {argumentos}")
-        
-        elif extensao == "py" :
-            print(f"Facila - Rodando: {nome_completo}")
-            print(" ")
-            system(f"python3 {nome_completo} {argumentos}")
-        
-        elif extensao == "c" :
-            print(f"Facila - Compilando: {nome_completo}")
-            if system(f"gcc {nome_completo} -o {arquivo}") == 0 :
-                print("Facila - OK")
-                print(f"Facila - Rodando: {nome_completo}")
-                print(" ")
-                system(f"./{arquivo} {argumentos}")
-       
-        elif extensao == "cpp" :
-            print(f"Facila - Compilando: {nome_completo}")
-            if system(f"g++ {nome_completo} -o {arquivo}") == 0 :
-                print("Facila - OK")
-                print(f"Facila - Rodando: {nome_completo}")
-                print(" ")
-                system(f"./{arquivo} {argumentos}")
-        
-        elif extensao == "hs" :
-            print(f"Facila - Compilando: {nome_completo}")
-            if system(f"ghc {nome_completo}") == 0 :
-                print("Facila - OK")
-                print(f"Facila - Rodando: {nome_completo}")
-                print(" ")
-                system(f"./{arquivo} {argumentos}")
-        
-        elif extensao == "pl" :
-            print("ainda não implementado")
-        
+        linhas = open("./.info.txt", 'r').readlines()
+        if len(linhas) in [3, 4] :
+            arquivo = linhas[1].strip()
+            extensao = linhas[2].strip()
+            nome_completo = f"{arquivo}.{extensao}"
+            
+            if compara_hash(nome_completo) == "diferente" :
+                atualiza_hash(nome_completo)
+                compila_executa(extensao, nome_completo, arquivo, argumentos)
+            else :
+                executa(extensao, arquivo, argumentos)
         else :
-            print("linguagem não catalogada")
+            msg_erro("Arquivo .info.txt mal prenchido", False)
     else :
-        msg_erro("Arquivo .info.txt não encontrando")
+        msg_erro("Arquivo .info.txt não encontrando", False)
 
 def main() : 
     modo = argv[1]

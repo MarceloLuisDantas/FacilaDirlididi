@@ -163,10 +163,17 @@ def instala_facila() -> bool :
         msg_erro("Instalando templates.py em ~/Facila")
 
     if terminal == "zsh" :
-        os.system('echo "alias facila=\'python3 ~/Facila/facila.py\'" >> ~/.zshrc')
+        file = open(os.path.expanduser("~/.zshrc"))
+        if("alias facila=\'python3 ~/Facila/facila.py\'" not in file.read()) :
+            os.system('echo "alias facila=\'python3 ~/Facila/facila.py\'" >> ~/.zshrc')
+            return True
         return True
+
     elif terminal == "bash" :
-        os.system('echo "alias facila=\'python3 ~/Facila/facila.py\'" >> ~/.bashrc')
+        file = open(os.path.expanduser("~/.bashrc"))
+        if("alias facila=\'python3 ~/Facila/facila.py\'" not in file.read()) :
+            os.system('echo "alias facila=\'python3 ~/Facila/facila.py\'" >> ~/.bashrc')
+            return True
         return True
 
     else :

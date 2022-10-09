@@ -10,8 +10,6 @@ import java.util.Scanner;
 public class {nome_formatado} {{
     public static void main(String[] args) {{
     	Scanner sc = new Scanner(System.in);
-    	
-        // codigo
         
         sc.close();
     }}
@@ -63,7 +61,6 @@ def __template_haskell(nome, matricula) -> str :
     @Author {nome} - {matricula}
 -}}
 
-main = IO ()
 main = putStrLn "Hello World!!"
 
 """

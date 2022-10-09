@@ -71,12 +71,16 @@ Além de criar atividades e submeter atividades, é possível configurar o arqui
 facila config [parametros]
 ```
 
-Ao rodar **facila run** o seu programa sera compilado caso for preciso, e ira ser executado em seguida. Caso algum parametro sejá indicado ele ira ser passado ao programa
+Ao rodar **facila run** o seu programa sera compilado caso for preciso, e ira ser executado em seguida. Caso algum parametro sejá indicado ele ira ser passado ao programa. Caso você rode **facila run** novamente sem alterar o código fonte ele vai apenas rodar o programa sem compilar novamente.
 
 ```
 User $> facila run dromedario
 Facila - Compilando: Hello.java
 Facila - OK
+Facila - Rodando: Hello.java
+
+Hello Dromedario
+User $> facila run dromedario
 Facila - Rodando: Hello.java
 
 Hello Dromedario
